@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>QR Scanner - TekiDeki</title>
+<meta name="description" content="Scan QR codes and barcodes in the browser, with product information from Open Food Facts. Local history, offline PWA, four languages.">
+<meta name="author" content="TekiDeki">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f4f6f9">
+<meta name="format-detection" content="telephone=no">
+<link rel="canonical" href="https://tekideki.github.io/QR-Scanner/">
+<link rel="alternate" hreflang="ro" href="https://tekideki.github.io/QR-Scanner/?lang=ro">
+<link rel="alternate" hreflang="en" href="https://tekideki.github.io/QR-Scanner/?lang=en">
+<link rel="alternate" hreflang="sr-Latn" href="https://tekideki.github.io/QR-Scanner/?lang=sr-Latn">
+<link rel="alternate" hreflang="sr-Cyrl" href="https://tekideki.github.io/QR-Scanner/?lang=sr-Cyrl">
+<link rel="alternate" hreflang="x-default" href="https://tekideki.github.io/QR-Scanner/">
+<link rel="icon" href="./favicon.ico" sizes="any">
+<link rel="icon" href="./icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="manifest" href="./manifest.json">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="QR Scanner - TekiDeki">
+<meta property="og:title" content="QR Scanner - TekiDeki">
+<meta property="og:description" content="Scan QR codes and barcodes in the browser, with product information from Open Food Facts. Local history, offline PWA, four languages.">
+<meta property="og:url" content="https://tekideki.github.io/QR-Scanner/">
+<meta property="og:image" content="https://tekideki.github.io/QR-Scanner/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ro_RO">
+<meta property="og:locale:alternate" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="QR Scanner - TekiDeki">
+<meta name="twitter:description" content="Scan QR codes and barcodes in the browser, with product information from Open Food Facts.">
+<meta name="twitter:image" content="https://tekideki.github.io/QR-Scanner/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "QR Scanner",
+  "url": "https://tekideki.github.io/QR-Scanner/",
+  "description": "Browser QR and barcode scanner with local history, offline support and optional product information from Open Food Facts.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript. Camera scanning needs a secure context (HTTPS).",
+  "softwareVersion": "1.0",
+  "isAccessibleForFree": true,
+  "inLanguage": ["ro", "en", "sr-Latn", "sr-Cyrl"],
+  "featureList": [
+    "QR and barcode scanning with the camera (native BarcodeDetector where available, bundled ZXing otherwise)",
+    "Scanning from images: file picker, drag and drop, clipboard paste",
+    "Content type detection: link, WiFi, contact, email, phone, SMS, location, product",
+    "Product information from Open Food Facts with local cache and offline fallback",
+    "Local scan history with search, filters, JSON export and import",
+    "Installable offline PWA in four languages"
+  ],
+  "author": { "@type": "Person", "name": "Kristian Mario Miskovic", "alternateName": "TekiDeki", "url": "https://github.com/TekiDeki" },
+  "license": "https://www.apache.org/licenses/LICENSE-2.0",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+}
+</script>
+<script>
+/* Applied before the first paint: saved or system theme, with no flash. */
+(function () {
+  try {
+    var dark = null;
+    var raw = localStorage.getItem('qr_scanner_settings_v1');
+    if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed.dark === 'boolean') dark = parsed.dark; }
+    if (dark === null) dark = !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', dark ? '#0f172a' : '#f4f6f9');
+  } catch (e) {}
+})();
+</script>
+<style>
+/*__STYLES__*/
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="skip_to_content">Skip to content</a>
+
+<header class="app-header">
+  <div class="app-header-inner">
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-hidden="true">
+          <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+          <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+          <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+          <path d="M14 14h3v3h-3zM20 14v1M14 20h1M18 18h3v3h-3z"></path>
+        </svg>
+      </span>
+      <div class="brand-text">
+        <h1 data-i18n="app_title">QR Scanner</h1>
+        <p data-i18n="app_subtitle">Scan QR and barcodes right in the browser</p>
+      </div>
+    </div>
+    <div class="header-controls">
+      <select id="langSelect" aria-label="Language">
+        <option value="ro">RO</option>
+        <option value="en">EN</option>
+        <option value="sr-latn">SR</option>
+        <option value="sr-cyrl">СР</option>
+      </select>
+      <button type="button" class="btn-icon" id="themeToggle" aria-pressed="false" aria-label="Toggle theme" title="Toggle theme">🌙</button>
+    </div>
+  </div>
+</header>
+
+<main class="container" id="main" tabindex="-1">
+  <div class="status-banner" id="statusBanner" role="status" aria-live="polite" hidden>
+    <div class="status-text" id="statusText"></div>
+    <div class="status-actions" id="statusActions"></div>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="Sections">
+    <button type="button" role="tab" id="tab-scan" data-tab="scan" aria-selected="true" aria-controls="panel-scan" data-i18n="tab_scan">Scan</button>
+    <button type="button" role="tab" id="tab-history" data-tab="history" aria-selected="false" aria-controls="panel-history" tabindex="-1" data-i18n="tab_history">History</button>
+    <button type="button" role="tab" id="tab-about" data-tab="about" aria-selected="false" aria-controls="panel-about" tabindex="-1" data-i18n="tab_about">About</button>
+  </div>
+
+  <!-- ============ SCAN ============ -->
+  <section id="panel-scan" role="tabpanel" aria-labelledby="tab-scan" data-panel="scan" tabindex="0">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head">
+          <h2 data-i18n="scanner_title">Camera</h2>
+          <span class="badge" id="engineNote">Engine</span>
+        </div>
+        <div class="scanner-shell">
+          <video id="video" playsinline muted hidden></video>
+          <div class="scanner-placeholder" id="scannerPlaceholder">
+            <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 7V5a1 1 0 0 1 1-1h2M17 4h2a1 1 0 0 1 1 1v2M20 17v2a1 1 0 0 1-1 1h-2M7 20H5a1 1 0 0 1-1-1v-2"></path>
+              <path d="M4 12h16"></path>
+            </svg>
+            <span data-i18n="scanner_idle">Camera is off</span>
+          </div>
+          <div class="scanner-frame" aria-hidden="true"></div>
+          <div class="scanner-laser" aria-hidden="true" id="laser"></div>
+          <div class="scanner-status" id="scannerStatus" data-i18n="scanner_idle">Camera is off</div>
+        </div>
+        <div class="scanner-controls">
+          <button type="button" class="btn-primary" id="startCamera" data-i18n="start_camera">Start camera</button>
+          <button type="button" class="btn-ghost" id="stopCamera" hidden data-i18n="stop_camera">Stop camera</button>
+          <button type="button" class="btn-icon" id="torchToggle" aria-pressed="false" aria-label="Turn the light on" title="Turn the light on" hidden>🔆</button>
+          <button type="button" class="btn-icon" id="switchCamera" aria-label="Switch camera" title="Switch camera" hidden>🔄</button>
+          <button type="button" class="btn-ghost" id="scanAgain" data-i18n="scan_again">Scan again</button>
+        </div>
+        <div class="switch-row">
+          <div>
+            <label for="continuousToggle" data-i18n="continuous_mode">Continuous mode</label>
+            <p class="hint" data-i18n="continuous_hint">Keep scanning one code after another without stopping.</p>
+          </div>
+          <input type="checkbox" class="switch" id="continuousToggle">
+        </div>
+        <p class="small muted" aria-live="polite" id="scanAnnounce"></p>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2 data-i18n="image_title">From an image</h2></div>
+        <div class="drop-zone" id="dropZone">
+          <p data-i18n="image_hint">Drop a photo here, pick a file, or paste from the clipboard (Ctrl+V).</p>
+          <button type="button" class="btn-primary" id="chooseImageBtn" data-i18n="choose_image">Choose image</button>
+          <input type="file" id="imageInput" accept="image/*" aria-label="Choose an image containing a code to scan" data-i18n-aria="a11y_image_input" hidden>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="resultCard">
+      <div id="resultPanel"></div>
+    </div>
+  </section>
+
+  <!-- ============ HISTORY ============ -->
+  <section id="panel-history" role="tabpanel" aria-labelledby="tab-history" data-panel="history" tabindex="0" hidden>
+    <div class="card">
+      <div class="card-head">
+        <h2 data-i18n="history_title">Scan history</h2>
+        <span class="small muted" id="historyStats"></span>
+      </div>
+      <label class="sr-only" for="historySearch" data-i18n="history_search">Search the history</label>
+      <input type="search" id="historySearch" data-i18n-placeholder="history_search" placeholder="Search the history" autocomplete="off">
+      <div class="filters" role="group" aria-label="Filters">
+        <button type="button" data-filter="all" aria-pressed="true" data-i18n="history_filter_all">All</button>
+        <button type="button" data-filter="links" aria-pressed="false" data-i18n="history_filter_links">Links</button>
+        <button type="button" data-filter="products" aria-pressed="false" data-i18n="history_filter_products">Products</button>
+        <button type="button" data-filter="contacts" aria-pressed="false" data-i18n="history_filter_contacts">Contacts</button>
+        <button type="button" data-filter="wifi" aria-pressed="false" data-i18n="history_filter_wifi">WiFi</button>
+        <button type="button" data-filter="text" aria-pressed="false" data-i18n="history_filter_text">Text</button>
+      </div>
+      <p class="empty-state" id="historyEmpty" hidden>No scans yet.</p>
+      <ul class="history-list" id="historyList"></ul>
+      <div class="actions">
+        <button type="button" class="btn-ghost" id="historyExport" data-i18n="history_export">Export JSON</button>
+        <button type="button" class="btn-ghost" id="historyImportBtn" data-i18n="history_import">Import JSON</button>
+        <input type="file" id="historyImportInput" accept="application/json,.json" aria-label="Choose a JSON file to import" data-i18n-aria="a11y_import_input" hidden>
+        <button type="button" class="btn-danger" id="historyClear" data-i18n="history_clear">Clear the history</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="panel-about" role="tabpanel" aria-labelledby="tab-about" data-panel="about" tabindex="0" hidden>
+    <div class="card">
+      <h2 data-i18n="about_title">About</h2>
+      <h3 data-i18n="about_what">What it does</h3>
+      <p data-i18n="about_what_text"></p>
+      <h3 data-i18n="about_privacy">Privacy</h3>
+      <p data-i18n="about_privacy_text"></p>
+      <h3 data-i18n="about_offline">Offline</h3>
+      <p data-i18n="about_offline_text"></p>
+      <h3 data-i18n="about_attr">External resources</h3>
+      <p data-i18n="about_attr_text"></p>
+      <h3 data-i18n="about_install">Install</h3>
+      <p data-i18n="about_install_text"></p>
+      <p>
+        <button type="button" class="btn-ghost" id="installBtn" data-i18n="install_button">Install the app</button>
+      </p>
+      <h3 data-i18n="about_shortcuts">Shortcuts</h3>
+      <p data-i18n="about_shortcuts_text"></p>
+      <p class="small muted"><span class="kbd">Space</span> · <span class="kbd">Ctrl</span>+<span class="kbd">V</span> · <span class="kbd">1</span> <span class="kbd">2</span> <span class="kbd">3</span></p>
+      <p data-i18n="about_license_text"></p>
+    </div>
+
+    <div class="card" id="settingsCard">
+      <h2 data-i18n="settings_title">Settings</h2>
+      <div class="switch-row">
+        <div>
+          <label for="enrichToggle" data-i18n="settings_enrich">Product enrichment via Open Food Facts</label>
+          <p class="hint" data-i18n="settings_enrich_hint"></p>
+        </div>
+        <input type="checkbox" class="switch" id="enrichToggle" checked>
+      </div>
+      <div class="switch-row">
+        <div><label for="vibrateToggle" data-i18n="settings_vibrate">Vibrate on detection</label></div>
+        <input type="checkbox" class="switch" id="vibrateToggle" checked>
+      </div>
+      <div class="switch-row">
+        <div><label for="soundToggle" data-i18n="settings_sound">Sound on detection</label></div>
+        <input type="checkbox" class="switch" id="soundToggle" checked>
+      </div>
+      <div class="switch-row">
+        <div>
+          <label for="clearCache" data-i18n="settings_cache">Product cache</label>
+          <p class="hint" id="cacheCount"></p>
+        </div>
+        <button type="button" class="btn-ghost btn-sm" id="clearCache" data-i18n="settings_clear_cache">Clear the cache</button>
+      </div>
+    </div>
+
+    <div class="card donate-card">
+      <p data-i18n="donate_text">Found it useful? You can support the project.</p>
+      <p>
+        <a class="button" href="https://paypal.me/TekiDeki" target="_blank" rel="noopener noreferrer" data-i18n="donate_button">Support the project</a>
+      </p>
+      <p class="small muted"><a href="https://github.com/sponsors/TekiDeki" target="_blank" rel="noopener noreferrer">GitHub Sponsors</a></p>
+    </div>
+  </section>
+</main>
+
+<footer class="app-footer">
+  <p class="notice" data-i18n="disclaimer"></p>
+  <p class="attribution small">
+    <span data-i18n="about_attr">External resources</span>:
+    <a href="https://github.com/zxing-js/library" target="_blank" rel="noopener noreferrer">ZXing-js (Apache-2.0)</a> ·
+    <a href="https://world.openfoodfacts.org" target="_blank" rel="noopener noreferrer">Open Food Facts (ODbL)</a>
+  </p>
+  <div class="tekideki-credits">
+    <span>© 2026 <a href="https://github.com/TekiDeki" target="_blank" rel="noopener noreferrer">TekiDeki</a></span>
+    <span aria-hidden="true">·</span>
+    <a href="https://github.com/TekiDeki/QR-Scanner" target="_blank" rel="noopener noreferrer" data-i18n="footer_source">Source code</a>
+    <span aria-hidden="true">·</span>
+    <a href="https://tekideki.github.io/QR-Scanner/LICENSE" target="_blank" rel="noopener noreferrer" data-i18n="footer_license">Apache-2.0</a>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+
+<dialog class="app-dialog" id="appDialog" aria-labelledby="appDialogTitle">
+  <h2 id="appDialogTitle"></h2>
+  <p id="appDialogBody"></p>
+  <div class="app-dialog-actions">
+    <button type="button" class="btn-ghost" id="appDialogCancel" data-i18n="cancel">Cancel</button>
+    <button type="button" class="btn-primary" id="appDialogConfirm" data-i18n="confirm">Continue</button>
+  </div>
+</dialog>
+
+<script>
+/*__VENDOR__*/
+</script>
+<script>
+/*__I18N__*/
+</script>
+<script>
+/*__APP__*/
+</script>
+</body>
+</html>

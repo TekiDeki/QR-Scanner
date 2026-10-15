@@ -1,0 +1,44 @@
+QR Scanner
+Copyright 2026 Kristian Mario Miskovic (TekiDeki)
+https://github.com/TekiDeki/QR-Scanner
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+--------------------------------------------------------------------------
+Bundled third-party software
+--------------------------------------------------------------------------
+
+1. ZXing ("zebra crossing") barcode decoding library, JavaScript port
+   Package: @zxing/library 0.23.0 (npm), https://github.com/zxing-js/library
+   Bundled as: zxing.min.js, inlined into index.html at build time
+             (web worker support files are intentionally not shipped)
+   License: Apache License, Version 2.0
+   Full license text: vendor/zxing-LICENSE.txt
+   Copyright notice as published by the upstream project:
+
+   Copyright 2015-present ZXing authors, ZXing-js contributors and other
+   contributors. Portions of the Java ZXing library are also covered by the
+   notices reproduced inside the upstream LICENSE file, including:
+
+     Copyright (c) 2005 Sun Microsystems, Inc.
+     Copyright (c) 2010-2014 University of Manchester
+     Copyright (c) 2010-2015 Stian Soiland-Reyes
+     Copyright (c) 2015 Peter Hull
+
+   The upstream library is unmodified. It is only minified, as distributed by
+   the upstream project's own build, and inlined into a single HTML file.
+
+No other third-party code is bundled. Application CSS and JavaScript are
+written for this project and carry the same Apache-2.0 license as above.
+
+--------------------------------------------------------------------------
+External data services (not bundled, called at runtime only)
+--------------------------------------------------------------------------
+
+Open Food Facts, https://world.openfoodfacts.org/
+   Optional product enrichment is requested by the browser directly from the
+   Open Food Facts API when the user enables it. Product data is made
+   available by Open Food Facts under the Open Database License (ODbL) 1.0.
+   The app displays the attribution "Open Food Facts (ODbL)" next to any
+   product data it shows. No Open Food Facts data is redistributed with this
+   repository.

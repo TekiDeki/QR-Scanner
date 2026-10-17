@@ -4,7 +4,7 @@
  * Cache name carries the app version; bump it when index.html changes. */
 'use strict';
 const PREFIX = 'tekideki-qr-scanner-';
-const CACHE = PREFIX + 'v1';
+const CACHE = PREFIX + 'v2';
 const SHELL = [
   './',
   './index.html',

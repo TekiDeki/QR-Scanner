@@ -590,6 +590,20 @@ input[type="checkbox"].switch:checked::after { transform: translateX(20px); }
     .support-link { min-height: 34px; display: inline-flex; align-items: center; }
   }
 </style>
+
+<style id="ecran-mic">
+/* regula casei: ecrane mici (320px) - nimic nu are voie sa iasa din ecran.
+   Blocul sta la finalul <head>, deci invinge stilurile de mai sus fara sa le rescrie. */
+@media (max-width: 380px) {
+  html, body { max-width: 100%; overflow-x: hidden; }
+  img, svg, canvas, video, table { max-width: 100%; }
+  /* antetul: selectul de limba si butonul de tema se pot strange si trec pe randul urmator */
+  header .tools, header .controls, .topbar .tools, .topbar .controls, .tools, .controls { flex-wrap: wrap; min-width: 0; }
+  header select, .tools select, .controls select, select#lang, select#lang-select, #lang-select { max-width: 100%; min-width: 0; }
+  /* panourile si cardurile se largestesc la cat incape */
+  .panel, .card, .sheet, .action, .action-main, .action-side, .source-panel, .panel-heading { min-width: 0; max-width: 100%; }
+  .chips, #cityChips { flex-wrap: wrap; }
+}
 </head>
 <body>
 <a class="skip-link" href="#main" data-i18n="skip_to_content">Skip to content</a>

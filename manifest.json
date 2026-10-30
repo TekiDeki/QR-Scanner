@@ -3,7 +3,7 @@
   "name": "QR Scanner · TekiDeki",
   "short_name": "QR Scanner",
   "description": "Universal QR and barcode scanner with product info from Open Food Facts. Works offline, no account, no tracking.",
-  "lang": "ro",
+  "lang": "en",
   "dir": "ltr",
   "start_url": "./",
   "scope": "./",
@@ -14,7 +14,7 @@
   ],
   "orientation": "any",
   "background_color": "#f4f6f9",
-  "theme_color": "#2563eb",
+  "theme_color": "#f4f6f9",
   "categories": [
     "utilities",
     "productivity"

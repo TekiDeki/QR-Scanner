@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; media-src 'self' blob: data:; connect-src 'self' https://world.openfoodfacts.org; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<!-- CSP prin meta: GitHub Pages nu permite antete HTTP. Fara frame-ancestors/form-action, pe care meta nu le accepta. -->
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>QR Scanner - TekiDeki</title>
 <meta name="description" content="Scan QR codes and barcodes in the browser, with product information from Open Food Facts. Local history, offline PWA, four languages.">

@@ -579,6 +579,16 @@ input[type="checkbox"].switch:checked::after { transform: translateX(20px); }
   .actions button, .actions .button { min-width: 0; flex: 1 1 45%; }
 }
 
+
+
+
+  /* regula casei: tinte de atingere pe mobil */
+  @media (pointer: coarse), (max-width: 700px) {
+    label:has(#continuousToggle), label[for="continuousToggle"] { min-height: 34px; display: flex; align-items: center; }
+    a { padding-block: 10px; }
+    a:not(:where(p, li, figcaption) a) { min-height: 34px; display: inline-flex; align-items: center; }
+    .support-link { min-height: 34px; display: inline-flex; align-items: center; }
+  }
 </style>
 </head>
 <body>

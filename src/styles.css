@@ -500,3 +500,78 @@ input[type="checkbox"].switch:checked::after { transform: translateX(20px); }
   .history-actions { justify-content: flex-start; }
   .actions button, .actions .button { min-width: 0; flex: 1 1 45%; }
 }
+
+
+
+
+  /* regula casei: tinte de atingere pe mobil */
+  @media (pointer: coarse), (max-width: 700px) {
+    label:has(#continuousToggle), label[for="continuousToggle"] { min-height: 34px; display: flex; align-items: center; }
+    a { padding-block: 10px; }
+    a:not(:where(p, li, figcaption) a) { min-height: 34px; display: inline-flex; align-items: center; }
+    .support-link { min-height: 34px; display: inline-flex; align-items: center; }
+  }
+</style>
+
+<style id="ecran-mic">
+/* regula casei: ecrane mici (320px) - nimic nu are voie sa iasa din ecran.
+   Blocul sta la finalul <head>, deci invinge stilurile de mai sus fara sa le rescrie. */
+@media (max-width: 380px) {
+  html, body { max-width: 100%; overflow-x: hidden; }
+  img, svg, canvas, video, table { max-width: 100%; }
+  /* antetul: selectul de limba si butonul de tema se pot strange si trec pe randul urmator */
+  header .tools, header .controls, .topbar .tools, .topbar .controls, .tools, .controls { flex-wrap: wrap; min-width: 0; }
+  header select, .tools select, .controls select, select#lang, select#lang-select, #lang-select { max-width: 100%; min-width: 0; }
+  /* panourile si cardurile se largestesc la cat incape */
+  .panel, .card, .sheet, .action, .action-main, .action-side, .source-panel, .panel-heading { min-width: 0; max-width: 100%; }
+  .chips, #cityChips { flex-wrap: wrap; }
+}
+</style>
+<style id="tinte-44">
+/* regula casei: pe telefon, tinta de atingere are cel putin 44x44px (WCAG 2.5.5, Apple HIG).
+   Se aplica doar pe pointer gros sau ecran mic, ca sa nu umfle interfata pe desktop.
+   `!important` e intentionat: e un prag de accesibilitate, nu o preferinta de stil, iar
+   fiecare unealta are propriile reguli de buton care ar castiga altfel.
+   Tabla jocurilor (`.cell`, `.tile`, `.slot`, `.key`) este lasata afara: acolo marimea
+   tintei e data de grila, nu de deget, si e tratata in blocul fiecarui joc. */
+@media (pointer: coarse), (max-width: 700px) {
+  html body :is(button, select, textarea, summary, [role="button"],
+      input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]),
+      label:has(input[type="checkbox"]), label:has(input[type="radio"]),
+      .check, .check-label, .switch, .btn, .button):not(.cell):not(.tile):not(.slot):not(.key) {
+    min-height: 44px !important;
+  }
+  html body :is(button, [role="button"], .btn, .button, .chip, .langbtn, .iconbtn, .icon-btn,
+      .btn-icon, .icon-button, .swatch, .switch, .tbtn, .buy, .skip):not(.cell):not(.tile):not(.slot):not(.key) {
+    display: inline-flex !important; align-items: center !important; justify-content: center !important;
+  }
+  html body :is(.iconbtn, .icon-btn, .btn-icon, .icon-button, .langbtn, .theme-toggle, .theme,
+      .swatch, .switch, .tbtn, .swap, .play-button, .stop-button, .undo, .buy,
+      .nav-btn, .editor-close, .round-btn, .chip-x, .close, .btn-close, .randomize-mini,
+      .history > button, .swatches > button) {
+    min-width: 44px !important; min-height: 44px !important;
+  }
+  html body :is(select, input[type="color"], input[type="number"], input[type="text"]) {
+    min-width: 44px !important;
+  }
+  html body :is(input[type="checkbox"], input[type="radio"]) { min-width: 24px !important; min-height: 24px !important; }
+  /* legaturile din afara textului curent (antet, subsol, navigatie); cele din propozitie
+     ramin legaturi de text, cum spune si exceptia pentru text din WCAG 2.5.5.
+     Cardurile-legatura isi pastreaza asezarea, doar inaltimea minima creste. */
+  html body a:not(p a):not(li a):not(td a):not(.gcard):not(.card) {
+    min-height: 44px !important; min-width: 44px !important;
+  }
+  html body :is(a.skip, .brand, a.buy) { display: inline-flex !important; align-items: center !important; }
+  /* barele care nu incapeau: se asaza pe doua randuri in loc sa iasa din ecran */
+  html body :is(nav, .nav, .navbar, .toolbar, .links, footer, .footnotes, .player-controls,
+      header, .topbar, .masthead, .app-header,
+      .topbar-actions, .header-actions, .hero-actions, .actions, .action-row,
+      .btn-row, .button-row, .controls, .controls-row, .filters,
+      .topbar-inner, .header-inner, .nav-inner, .bar-inner,
+      [class$="-inner"], [class$="-actions"]) {
+    flex-wrap: wrap !important;
+  }
+  html body input[type="range"] { height: 44px !important; }
+  /* campurile de fisier sunt suprapuse peste zona de tragere si nu trebuie sa iasa din ea */
+  html body :is(input[type="file"], input[type="color"], img, video, canvas) { max-width: 100% !important; }
+}

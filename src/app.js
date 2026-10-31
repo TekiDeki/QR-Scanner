@@ -1049,25 +1049,6 @@
     toast(t('settings_cache_cleared'));
   }
 
-  // ---------- install prompt ----------
-  let installEvent = null;
-  window.addEventListener('beforeinstallprompt', event => {
-    event.preventDefault();
-    installEvent = event;
-    $('installWrap').hidden = false;
-  });
-  async function installApp() {
-    if (installEvent) {
-      installEvent.prompt();
-      try { await installEvent.userChoice; } catch (e) { /* ignore */ }
-      installEvent = null;
-      $('installWrap').hidden = true;
-      return;
-    }
-    const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    toast(isIos ? t('install_hint_ios') : t('install_hint_other'));
-  }
-
   /* Language priority: explicit ?lang= link, then the saved choice, then the browser. */
   function pickInitialLang(params) {
     const requested = (params.get('lang') || '').toLowerCase();
@@ -1163,7 +1144,6 @@
     $('soundToggle').addEventListener('change', event => { settings.sound = event.target.checked; saveSettings(); });
     $('clearCache').addEventListener('click', clearProductCache);
     $('chooseImageBtn').addEventListener('click', () => $('imageInput').click());
-    $('installBtn').addEventListener('click', installApp);
     // header
     $('themeToggle').addEventListener('click', () => {
       settings.dark = document.documentElement.getAttribute('data-theme') !== 'dark';

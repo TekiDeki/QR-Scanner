@@ -137,7 +137,6 @@
               <path d="M4 7V5a1 1 0 0 1 1-1h2M17 4h2a1 1 0 0 1 1 1v2M20 17v2a1 1 0 0 1-1 1h-2M7 20H5a1 1 0 0 1-1-1v-2"></path>
               <path d="M4 12h16"></path>
             </svg>
-            <span data-i18n="scanner_idle">Camera is off</span>
           </div>
           <div class="scanner-frame" aria-hidden="true"></div>
           <div class="scanner-laser" aria-hidden="true" id="laser"></div>
@@ -157,7 +156,7 @@
           </div>
           <input type="checkbox" class="switch" id="continuousToggle">
         </div>
-        <p class="small muted" aria-live="polite" id="scanAnnounce"></p>
+        <p class="sr-only" role="status" aria-live="polite" id="scanAnnounce"></p>
       </div>
 
       <div class="card">

@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
-"""Builds the single-file index.html: styles + inlined ZXing + i18n + app."""
+"""Builds the single-file index.html: styles + inlined ZXing + i18n + app.
+
+Deterministic: same sources, same bytes. `src/styles.css` deliberately ends without a
+trailing newline - the template adds the newline before </style>, and a second one would
+change the built file.
+"""
 from pathlib import Path
 
-SRC = Path('/home/user/qr-work/src')
-VENDOR = Path('/home/user/qr-work/vendor/zxing.min.js')
-OUT = Path('/home/user/dash-cleanup-work/QR-Scanner/index.html')
+ROOT = Path(__file__).resolve().parent
+SRC = ROOT / 'src'
+VENDOR = ROOT / 'vendor' / 'zxing.min.js'
+OUT = ROOT / 'index.html'
 
 template = (SRC / 'template.html').read_text(encoding='utf-8')
 styles = (SRC / 'styles.css').read_text(encoding='utf-8')
